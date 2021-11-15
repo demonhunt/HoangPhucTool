@@ -1,0 +1,16 @@
+{
+  "name": "hoangphuctool",
+  "version": "1.0.0",
+  "description": "Tool to import stock info",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thanh Nguyen",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "^0.17.3",
+    "xlsx-populate": "^1.21.0"
+  }
+}
