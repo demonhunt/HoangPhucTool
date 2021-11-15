@@ -76,18 +76,28 @@ export default class POData {
         }
      }
 
-     exportExcel =  (pathSource , pathDes) =>{
-        XlsxPopulate.fromFileAsync(pathSource).then(wb=>{
-            const sheet  = wb.sheet(this.sheetName);
-            const dataMap = new DataMap(sheet);
+     exportExcel = async  (pathSource , pathDes) =>{
 
-            for(const prod of this.productArray){
-                const {sku , qty} = prod    
-                dataMap.editColumnn(sku , STOCK_COL_SKU , qty , STOCK_COL_QTY)
-            }
-            wb.toFileAsync(pathDes)
+         //Create file des
+         await XlsxPopulate.fromFileAsync(pathSource).then(async wb => {
+             for (const po of this.poArray) {
+                 po.populatePoSheet(wb)
+             }
+             await wb.toFileAsync(pathDes)
+         }).then(async () => {
+             //Add report products
+             const wb = await XLSX.readFile(pathDes)
+             var jsonObjectArr = []
+             for (const po of this.poArray) {
+                 jsonObjectArr =[... jsonObjectArr,... po.generateProductReport()]
+             }
+             const sheet = await XLSX.utils.json_to_sheet(jsonObjectArr);
+             delete wb.Sheets["Không xử lý được"]
+             await XLSX.utils.book_append_sheet(wb, sheet, "Không xử lý được");
+             XLSX.writeFile(wb,pathDes)
         })
 
+     
     }
 
 }

@@ -60,5 +60,12 @@ export default class POProduct {
         }
     }
 
+    isFulfilled = () =>{
+        return this.requireQty <= this.fulfilledQty;
+    }
+
+   getUnfulfilledQty = ()=> this.requireQty - this.fulfilledQty
+   getStatus = () =>this.status
+
 }
 

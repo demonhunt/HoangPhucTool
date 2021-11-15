@@ -12,7 +12,7 @@ export default class StockProduct {
     parseRow = (row) => new Promise((resolve, reject) => {
         try {
             this.sku = row[STOCK_COL_SKU];
-            this.qty = row[STOCK_COL_QTY];
+            this.qty = parseInt(row[STOCK_COL_QTY]);
 
             for (const _props of Object.keys(row)) {
                 this.allProps[_props] = row[_props];

@@ -1,4 +1,7 @@
 import POProduct from './POProduct.js'
+import DataMap from './DataMap.js'
+import { PO_COL_SKU , PO_COL_QTY } from '../constants/index.js'
+
 export default class PO {
     constructor(poData, poId, poTitle) {
         this.productArray = []
@@ -42,5 +45,29 @@ export default class PO {
 
     }
 
+    populatePoSheet = (wb) => {
+        const sheet = wb.sheet(this.poId)
+        const dataMap = new DataMap(sheet)
+        for (const prod of this.productArray) {
+            const {fulfilledQty , sku  } = prod
+            dataMap.editColumnn(sku,PO_COL_SKU,fulfilledQty , PO_COL_QTY)
+        }
+    }
+
+    generateProductReport = () =>{
+        var reportArr = []
+        for(const poProd of this.productArray){
+            if(!poProd.isFulfilled()){
+                
+                reportArr.push({
+                    'TO number' :  this.poId,
+                    Barcode : poProd.sku,
+                    'Số lượng' : poProd.getUnfulfilledQty(),
+                    Note : poProd.getStatus()
+                })
+            }
+        }
+        return reportArr
+    }
 }
 

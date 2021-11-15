@@ -22,7 +22,6 @@ export default class DataMap {
                 if(flagCheck){ //This is the header row of the sheet
                     let i = 1
                     while(row.cell(i) && row.cell(i).value()){
-                        console.log(row.cell(i).value())
                         this.headerRow.push({
                             value : row.cell(i).value(), 
                             col : row.cell(i).columnNumber() 
